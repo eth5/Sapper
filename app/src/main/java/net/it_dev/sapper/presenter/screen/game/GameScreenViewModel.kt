@@ -72,8 +72,8 @@ class GameScreenViewModel @Inject constructor(
 	}
 
 	private fun check(line:Int, pos:Int, field: MineField){
-		val itemField = field.get(line,pos).value
-		if (itemField.hasMine) return
+		//val itemField = field.get(line,pos)
+		//if (itemField.hasMine) return
 
 	}
 

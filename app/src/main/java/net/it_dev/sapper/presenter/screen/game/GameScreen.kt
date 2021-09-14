@@ -68,6 +68,7 @@ fun ItemField(line:Int, pos:Int, itemField: MutableState<ItemField>, viewModel: 
 			ItemFieldState.Closed -> "block.jpg"
 			ItemFieldState.Flagged -> "block_flag.jpg"
 			is ItemFieldState.Open -> TODO()
+			is ItemFieldState.Digit -> TODO()
 		}
 		bitmap = viewModel.imageBitmapFactory.getImageBitmap(img)
 	}

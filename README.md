@@ -6,5 +6,5 @@
 :black_square_button: Онлайн рекорды    
 :black_square_button: ... :)
 
-d->[](http://it-dev.pro/dev_git/sapper/1.jpg)
-[](http://it-dev.pro/dev_git/sapper/2.jpg)
+[screen1](http://it-dev.pro/dev_git/sapper/1.jpg)
+[screen2](http://it-dev.pro/dev_git/sapper/2.jpg)

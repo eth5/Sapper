@@ -6,4 +6,5 @@
 :black_square_button: Онлайн рекорды    
 :black_square_button: ... :)
 
-[Alt-text](http://it-dev.pro/dev_git/sapper/1.png "Screen1")[](http://it-dev.pro/dev_git/sapper/2.png "Screen2")
+[Scree1](http://it-dev.pro/dev_git/sapper/1.png)
+[Scree2](http://it-dev.pro/dev_git/sapper/2.png)

@@ -21,8 +21,8 @@ object AppModule {
 		val assetImageProvider = AssetImageProvider()
 		assetImageProvider.loadNewImages(
 			context.assets,
-			"block.jpg",
-		"block_flag.jpg")
+			"block.jpg", "flag.png","empty_block.jpg","1.jpg","2.jpg","3.jpg","4.jpg","5.jpg","6.jpg","7.jpg","8.jpg","mine.jpg"
+		)
 		return assetImageProvider
 	}
 }

@@ -1,11 +1,10 @@
 package net.it_dev.sapper.presenter.screen.start
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,24 +59,15 @@ fun ButtonsColumn(navController: NavController) {
 	){
 		buttons.forEach {
 			val enableState by remember { it.stateEnable }
-			Box(modifier = Modifier.padding(10.dp)){
-				TextButton(
-					onClick = it.action,
-					enabled = enableState,
-					modifier = Modifier
-						.background(MaterialTheme.colors.secondary, MaterialTheme.shapes.medium)
-						.border(
-							2.dp,
-							MaterialTheme.colors.onSecondary,
-							MaterialTheme.shapes.medium
-						),
-				) {
-					Text(
-						text = it.text,
-						fontSize = 30.sp,
-						fontWeight = FontWeight.Bold
-					)
-				}
+			Box(modifier = Modifier
+				.padding(10.dp)
+				.clickable (onClick = it.action)
+			){
+				Text(
+					text = it.text,
+					fontSize = 30.sp,
+					fontWeight = FontWeight.Bold
+				)
 			}
 
 			Spacer(modifier = Modifier.height(5.dp))

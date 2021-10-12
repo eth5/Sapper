@@ -2,7 +2,6 @@ package net.it_dev.sapper.presenter.screen.game
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,12 +11,14 @@ import net.it_dev.sapper.domain.GameState
 import net.it_dev.sapper.domain.ItemField
 import net.it_dev.sapper.domain.ItemFieldState
 import net.it_dev.sapper.presenter.bitmap.IBitmapFactory
+import net.it_dev.sapper.setting.ISetting
 import net.it_dev.sapper.util.Resource
 import javax.inject.Inject
 
 @HiltViewModel
 class GameScreenViewModel @Inject constructor(
-	val imageBitmapFactory: IBitmapFactory
+	val imageBitmapFactory: IBitmapFactory,
+	private val setting:ISetting
 ) : ViewModel() {
 	companion object {
 		private const val TAG = "GameScreenViewModel"
@@ -39,10 +40,16 @@ class GameScreenViewModel @Inject constructor(
 	val time:State<Int> get() = _time
 
 	private lateinit var sessionData:SessionData
-	fun initial(rows: Int, columns: Int, mines: Int){
-		if (this::sessionData.isInitialized) return
-		sessionData = SessionData(rows, columns, mines)
-		startNewSession()
+
+	fun initial(){
+		val resource = setting.getConfig()
+		//todo show error msg
+		if (resource is Resource.Success){
+			val config = resource.data
+			sessionData = SessionData(config.rows, config.columns, config.mines)
+			startNewSession()
+		}
+
 	}
 
 	private fun startNewSession() {

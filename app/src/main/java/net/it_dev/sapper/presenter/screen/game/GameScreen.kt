@@ -32,7 +32,7 @@ import kotlin.random.Random
 @Composable
 fun GameScreen(navController: NavController, viewModel: GameScreenViewModel = hiltViewModel()) {
 	LaunchedEffect(Unit){
-		viewModel.initial(10,10,5)
+		viewModel.initial()
 	}
 
 	var offsetX by remember { mutableStateOf(0.dp) }
@@ -120,7 +120,7 @@ fun MineField(mineField: MineField, viewModel: GameScreenViewModel = hiltViewMod
 }
 
 @Composable
-fun ItemField(line: Int, pos: Int, itemField: MutableState<ItemField>, viewModel: GameScreenViewModel) {
+fun ItemField(line: Int, pos: Int, itemField: State<ItemField>, viewModel: GameScreenViewModel) {
 	val item by  itemField
 	Box(
 		modifier = Modifier

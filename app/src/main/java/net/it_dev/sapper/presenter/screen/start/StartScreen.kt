@@ -46,7 +46,7 @@ fun ButtonsColumn(navController: NavController) {
 	val buttons = remember{
 		listOf(
 			Button("Новая игра", {navController.navigate(Screens.Game.route)},),
-			Button("Настройка", {},),
+			Button("Настройка", {navController.navigate(Screens.Setting.route)},),
 			Button("Герои", {},),
 			Button("Sign In", {},),
 		)

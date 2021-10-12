@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Sapper</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="width">Width</string>
+    <string name="height">Height</string>
+    <string name="mines">Mines</string>
+    <string name="settings">Settings</string>
 </resources>

@@ -9,6 +9,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
 import net.it_dev.sapper.presenter.bitmap.AssetImageProvider
 import net.it_dev.sapper.presenter.bitmap.IBitmapFactory
+import net.it_dev.sapper.setting.ISetting
+import net.it_dev.sapper.setting.Setting
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -24,5 +26,10 @@ object AppModule {
 			"block.jpg", "flag.png","empty_block.jpg","1.jpg","2.jpg","3.jpg","4.jpg","5.jpg","6.jpg","7.jpg","8.jpg","mine.jpg"
 		)
 		return assetImageProvider
+	}
+	@ViewModelScoped
+	@Provides
+	fun getSetting(@ApplicationContext ctx: Context):ISetting{
+		return Setting(ctx.getSharedPreferences("settings", Context.MODE_PRIVATE))
 	}
 }

@@ -13,14 +13,20 @@ class AssetSounds(private val am:AssetManager, private val dir:String):ISoundPoo
     override val isLoaded: Boolean
         get() = TODO("Not yet implemented")
 
-    override fun load(path: String) {
+    fun load(vararg path: String) {
+        path.forEach {
+            load(it)
+        }
+    }
+
+    fun load(path: String) {
         am.openFd("$dir/$path").use { afd ->
             if (map.containsKey(path))throw IllegalStateException("Double key in map! key=$path")
             map[path] = soundPool.load(afd,0)
         }
     }
 
-    override fun unload(path: String) {
+    fun unload(path: String) {
         val get = map.remove(path) ?: throw NullPointerException("Звук не загружен! path=$path")
         soundPool.unload(get)
     }

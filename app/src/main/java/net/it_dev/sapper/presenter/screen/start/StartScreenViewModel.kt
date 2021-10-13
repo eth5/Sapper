@@ -1,6 +1,5 @@
 package net.it_dev.sapper.presenter.screen.start
 
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -10,10 +9,11 @@ import javax.inject.Inject
 class StartScreenViewModel @Inject constructor(
 
 ) : ViewModel() {
+    val message = mutableStateOf<String?>(null)
 
 
-	//val navigateStateEvent = mutableStateOf<String?>(null)
-
-
+    fun noImpl(){
+        message.value = "Coming soon"
+    }
 
 }

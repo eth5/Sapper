@@ -28,7 +28,9 @@ object AppModule {
     @Provides
     fun getSoundPool(@ApplicationContext ctx: Context):ISoundPool{
         val assetSounds =  AssetSounds(ctx.assets, "fx")
-        assetSounds.load(Fx.PIC)
+
+        assetSounds.load(Fx.PIC, Fx.FLAG_PUT, Fx.FLAG_TAKE)
+
         return assetSounds;
     }
 }

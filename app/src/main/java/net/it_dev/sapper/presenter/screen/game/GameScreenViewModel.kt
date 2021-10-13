@@ -7,8 +7,10 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import net.it_dev.sapper.domain.*
+import net.it_dev.sapper.log.ILog
 import net.it_dev.sapper.presenter.bitmap.IBitmapFactory
 import net.it_dev.sapper.setting.ISetting
+import net.it_dev.sapper.sound.Fx
 import net.it_dev.sapper.sound.IFxPlayer
 import net.it_dev.sapper.sound.ISoundPool
 import net.it_dev.sapper.util.Resource
@@ -19,7 +21,8 @@ class GameScreenViewModel @Inject constructor(
 	val imageBitmapFactory: IBitmapFactory,
 	private val setting:ISetting,
 	private val fxPlayer: IFxPlayer,
-	private val sp:ISoundPool
+	private val sp:ISoundPool,
+	val log:ILog
 ) : ViewModel() {
 	companion object {
 		private const val TAG = "GameScreenViewModel"
@@ -34,21 +37,31 @@ class GameScreenViewModel @Inject constructor(
 	private val internalField get() = _field.value.data!!
 
 	val gameState = mutableStateOf(GameState.STOP)
-	val boom = mutableStateOf(false)
+	val boom = mutableStateOf<Boolean?>(null)
 
 	private var _flags: Flags = Flags()
 	val flags:State<Int> get() = _flags.count
 	val timer = Timer(sp, viewModelScope)
 
 	private lateinit var sessionData:SessionData
-
+	private var volume = 1f
+		set(value) {
+			field = value
+			timer.volume = field
+		}
+	private var isInitialized = false;
 	fun initial(){
+		log.i(this, "initial")
+		if (isInitialized)return
 		val resource = setting.getConfig()
 		//todo show error msg
 		if (resource is Resource.Success){
 			val config = resource.data
+			fxPlayer.setVolume(config.volume)
+			volume = config.volume
 			sessionData = SessionData(config.rows, config.columns, config.mines)
 			startNewSession()
+			isInitialized = true
 		}
 
 	}
@@ -131,9 +144,11 @@ class GameScreenViewModel @Inject constructor(
 		if (item.itemFieldState == ItemFieldState.Closed){
 			if (!item.hasFlag){
 				if (_flags.tryGetFlag()) itemFieldState.value = item.copy(hasFlag = true)
+				sp.play(Fx.FLAG_PUT, volume)
 			}else{
 				itemFieldState.value = item.copy(hasFlag = false)
 				_flags.putFlag()
+				sp.play(Fx.FLAG_TAKE, volume)
 			}
 		}
 	}

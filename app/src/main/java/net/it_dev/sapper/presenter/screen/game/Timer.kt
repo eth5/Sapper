@@ -11,7 +11,7 @@ class Timer(private val sp:ISoundPool, private val scope: CoroutineScope) {
     private var timerJob: Job? = null
     private val _time = mutableStateOf(0)
     val time: State<Int> get() = _time
-
+    var volume:Float =1f
     fun start(initialValue:Int){
         stop()
         _time.value = initialValue
@@ -19,7 +19,9 @@ class Timer(private val sp:ISoundPool, private val scope: CoroutineScope) {
             _time.value = 0
             while (isActive) {
                 delay(1000)
-                sp.play(Fx.PIC, 1f)//todo добавить регулятор громкости
+
+                sp.play(Fx.PIC, volume)
+
                 _time.value++
             }
         }

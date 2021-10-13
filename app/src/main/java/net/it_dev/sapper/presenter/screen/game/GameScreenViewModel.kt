@@ -6,19 +6,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
-import net.it_dev.sapper.domain.Flags
-import net.it_dev.sapper.domain.GameState
-import net.it_dev.sapper.domain.ItemField
-import net.it_dev.sapper.domain.ItemFieldState
+import net.it_dev.sapper.domain.*
 import net.it_dev.sapper.presenter.bitmap.IBitmapFactory
 import net.it_dev.sapper.setting.ISetting
+import net.it_dev.sapper.sound.IFxPlayer
+import net.it_dev.sapper.sound.ISoundPool
 import net.it_dev.sapper.util.Resource
 import javax.inject.Inject
 
 @HiltViewModel
 class GameScreenViewModel @Inject constructor(
 	val imageBitmapFactory: IBitmapFactory,
-	private val setting:ISetting
+	private val setting:ISetting,
+	private val fxPlayer: IFxPlayer,
+	private val sp:ISoundPool
 ) : ViewModel() {
 	companion object {
 		private const val TAG = "GameScreenViewModel"
@@ -37,8 +38,7 @@ class GameScreenViewModel @Inject constructor(
 
 	private var _flags: Flags = Flags()
 	val flags:State<Int> get() = _flags.count
-	private val _time = mutableStateOf(0)
-	val time:State<Int> get() = _time
+	val timer = Timer(sp, viewModelScope)
 
 	private lateinit var sessionData:SessionData
 
@@ -62,6 +62,7 @@ class GameScreenViewModel @Inject constructor(
 				_flags.setCount(sessionData.mines)
 				startTimer()
 				gameState.value = GameState.IN_PLAY
+				timer.start(0)
 			}
 		}
 	}
@@ -73,16 +74,9 @@ class GameScreenViewModel @Inject constructor(
 	}
 
 
-	private var timerJob: Job? = null
+
 	private fun startTimer() {
-		runBlocking { timerJob?.cancelAndJoin() }
-		timerJob = viewModelScope.launch {
-			_time.value = 0
-			while (isActive) {
-				delay(1000)
-				_time.value++
-			}
-		}
+
 	}
 
 
@@ -97,20 +91,22 @@ class GameScreenViewModel @Inject constructor(
 		if (boom){
 			this.boom.value = true
 			stopGame(GameState.LOSE)
+
 		}else{
 			stopGame(GameState.WIN)
 		}
 	}
 
 
-
-
-
 	fun checkOn(line: Int, pos: Int, itemField: ItemField) {
 		if (gameState.value == GameState.IN_PLAY && !itemField.hasFlag){
 			internalField.checkAt(line, pos){
-				stopGame(GameState.LOSE)
-				boom.value = true
+				if (it == -1){
+					stopGame(GameState.LOSE)
+					boom.value = true
+				}else {
+					fxPlayer.play("harp.ogg",null)
+				}
 			}
 		}
 	}
@@ -120,8 +116,10 @@ class GameScreenViewModel @Inject constructor(
 	}
 
 	private fun stopGame(state: GameState) {
+		fxPlayer.play("boom.ogg",null)
 		gameState.value = state
-		timerJob?.cancel()
+		timer.stop()
+		snackebarText.value = "Game Over"
 	}
 
 	fun longPressOn(line: Int, pos: Int) {

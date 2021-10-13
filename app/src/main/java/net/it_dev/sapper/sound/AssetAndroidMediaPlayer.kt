@@ -1,10 +1,9 @@
 package net.it_dev.sapper.sound
 
-import android.content.Context
+import android.content.res.AssetManager
 import android.media.MediaPlayer
-import java.lang.IllegalStateException
 
-class AssetAndroidMediaPlayer(private val context: Context): IFxPlayer {
+class AssetAndroidMediaPlayer(private val am: AssetManager, private val baseDir:String): IFxPlayer {
 	private val mediaPlayer: MediaPlayer = MediaPlayer().also {
 		it.setOnPreparedListener { mp->
 			mp.start()
@@ -29,7 +28,7 @@ class AssetAndroidMediaPlayer(private val context: Context): IFxPlayer {
 		mediaPlayer.reset()
 		endPlayCallback = onEndPlay
 
-		context.assets.openFd(file).use {
+		am.openFd("$baseDir/$file").use {
 			mediaPlayer.setDataSource(it.fileDescriptor, it.startOffset, it.declaredLength)
 			mediaPlayer.prepare()
 		}

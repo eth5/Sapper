@@ -51,7 +51,7 @@ class MineField(val rows: Int, val columns: Int) {
 		itemField.value = item.copy(itemFieldState = state)
 	}
 
-	fun checkAt(line: Int, pos: Int, onBoom: (() -> Unit)? = null) {
+	fun checkAt(line: Int, pos: Int, onOpen: ((Int) -> Unit)? = null) {
 
 		val itemField = get(line, pos) ?: return
 
@@ -59,8 +59,8 @@ class MineField(val rows: Int, val columns: Int) {
 
 		if (field.hasMine) {
 			itemField.value = field.copy(itemFieldState = ItemFieldState.Boom)
-			if (onBoom == null) throw IllegalStateException("boom not can be null in this state!!!")
-			onBoom()
+			if (onOpen == null) throw IllegalStateException("boom not can be null in this state!!!")
+			onOpen(-1)
 			return
 		}
 
@@ -69,6 +69,8 @@ class MineField(val rows: Int, val columns: Int) {
 		val mines = minesAround(line, pos)
 
 		if (mines == 0) {
+
+			onOpen?.invoke(1)
 			itemField.value = field.copy(itemFieldState = ItemFieldState.Empty)
 			checkAt(line - 1, pos - 1)
 			checkAt(line - 1, pos)
@@ -78,6 +80,7 @@ class MineField(val rows: Int, val columns: Int) {
 			checkAt(line + 1, pos)
 			checkAt(line + 1, pos - 1)
 			checkAt(line, pos - 1)
+
 		} else {
 			itemField.value = field.copy(itemFieldState = ItemFieldState.Digit(mines))
 		}

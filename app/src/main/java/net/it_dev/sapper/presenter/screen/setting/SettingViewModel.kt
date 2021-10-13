@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import net.it_dev.sapper.setting.Config
 import net.it_dev.sapper.setting.ISetting
 import net.it_dev.sapper.util.Resource
+import java.lang.NumberFormatException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -52,13 +53,27 @@ class SettingViewModel @Inject constructor(
     }
 
     fun setWidth(value:String) {
-        width.value = stringToInt(value).coerceAtLeast(1)
+        try{
+            width.value = stringToInt(value)
+        }catch (e:NumberFormatException){
+            e.printStackTrace()
+        }
+        width.value = stringToInt(value)
     }
     fun setHeight(value:String){
-        height.value = stringToInt(value).coerceAtLeast(1)
+        try{
+            height.value = stringToInt(value)
+        }catch (e:NumberFormatException){
+            e.printStackTrace()
+        }
     }
     fun setMines(value: String){
-        mines.value = stringToInt(value).coerceAtLeast(1)
+        try {
+            mines.value = stringToInt(value)
+        }catch (e:NumberFormatException){
+            e.printStackTrace()
+        }
+
     }
 
     private fun stringToInt(value: String):Int{
@@ -68,9 +83,9 @@ class SettingViewModel @Inject constructor(
     }
     private fun createConfig():Resource<Config>{
         val config = Config(
-            width.value,
-            height.value,
-            mines.value
+            width.value.coerceIn(1, 20),
+            height.value.coerceIn(1, 20),
+            mines.value.coerceAtLeast(1)
         )
         return Resource.Success(config)
     }

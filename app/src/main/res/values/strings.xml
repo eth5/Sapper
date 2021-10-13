@@ -7,4 +7,7 @@
     <string name="height">Height</string>
     <string name="mines">Mines</string>
     <string name="settings">Settings</string>
+
+    <string name="open_fields">Open Fields</string>
+    <string name="reset_game">Reset Game</string>
 </resources>

@@ -11,6 +11,8 @@ import net.it_dev.sapper.presenter.bitmap.AssetImageProvider
 import net.it_dev.sapper.presenter.bitmap.IBitmapFactory
 import net.it_dev.sapper.setting.ISetting
 import net.it_dev.sapper.setting.Setting
+import net.it_dev.sapper.sound.AssetAndroidMediaPlayer
+import net.it_dev.sapper.sound.IFxPlayer
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -24,7 +26,6 @@ object ViewModelModule {
 		assetImageProvider.loadAllImagesFrom(
 			"imgs",
 			context.assets
-			//"imgs/block.jpg", "imgs/flag.png","imgs/empty_block.jpg","imgs/1.jpg","imgs/2.jpg","imgs/3.jpg","imgs/4.jpg","imgs/5.jpg","imgs/6.jpg","imgs/7.jpg","imgs/8.jpg","imgs/mine.jpg"
 		)
 		return assetImageProvider
 	}
@@ -32,6 +33,11 @@ object ViewModelModule {
 	@Provides
 	fun getSetting(@ApplicationContext ctx: Context):ISetting{
 		return Setting(ctx.getSharedPreferences("settings", Context.MODE_PRIVATE))
+	}
+	@ViewModelScoped
+	@Provides
+	fun getFxPlayer(@ApplicationContext ctx: Context):IFxPlayer{
+		return AssetAndroidMediaPlayer(ctx.assets, "sounds")
 	}
 
 }

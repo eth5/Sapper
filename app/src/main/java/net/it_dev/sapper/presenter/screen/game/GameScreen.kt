@@ -19,14 +19,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import net.it_dev.sapper.domain.ItemField
 import net.it_dev.sapper.domain.ItemFieldState
 import net.it_dev.sapper.presenter.screen.game.top_line.TopLine
 import net.it_dev.sapper.presenter.ui.theme.border
-import net.it_dev.sapper.presenter.util.SnackbarMessage
+import net.it_dev.sapper.presenter.util.SnackbarSimpleMessage
 import net.it_dev.sapper.util.Resource
 import kotlin.random.Random
 
@@ -38,7 +36,7 @@ fun GameScreen(navController: NavController, viewModel: GameScreenViewModel = hi
 		scaffoldState = scaffoldState,
 	){
 		Content(viewModel = viewModel)
-		SnackbarMessage(textState = viewModel.snackebarText, scaffoldState = scaffoldState, scope = scope)
+		SnackbarSimpleMessage(textState = viewModel.snackebarText, scaffoldState = scaffoldState, scope = scope, SnackbarDuration.Long)
 	}
 }
 
@@ -179,7 +177,7 @@ fun ItemField(line: Int, pos: Int, itemField: State<ItemField>, viewModel: GameS
 		)
 		if (item.hasFlag) {
 			Image(
-				bitmap = viewModel.imageBitmapFactory.getImageBitmap("imgs/flag.png"),
+				bitmap = viewModel.imageBitmapFactory.getImageBitmap("flag.png"),
 				contentDescription = "Flag",
 				contentScale = ContentScale.FillBounds,
 				modifier = Modifier.fillMaxSize(),

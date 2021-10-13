@@ -18,11 +18,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import net.it_dev.sapper.R
 import net.it_dev.sapper.domain.GameState
 import net.it_dev.sapper.presenter.screen.game.GameScreenViewModel
 import net.it_dev.sapper.presenter.screen.game.top_line.dialog.TopLineDialog
 import net.it_dev.sapper.presenter.ui.theme.bg
 import net.it_dev.sapper.presenter.ui.theme.border
+import net.it_dev.sapper.presenter.util.getResString
 
 @Composable
 fun TopLine(viewModel: GameScreenViewModel = hiltViewModel()) {
@@ -85,7 +87,7 @@ fun TopLine(viewModel: GameScreenViewModel = hiltViewModel()) {
 			icon = saveIcon.value!!
 			viewModel.showDialog.value = false
 		}
-		Timer(viewModel.time, Modifier.weight(1f,false))
+		Timer(viewModel.timer.time, Modifier.weight(1f,false))
 	}
 }
 
@@ -94,8 +96,8 @@ fun ShowDialog(state:State<Boolean>, viewModel: GameScreenViewModel, onDismiss:(
 	if (state.value){
 		TopLineDialog(
 			buttons = listOf(
-				"Open" to viewModel::openAll,
-				"Reset" to viewModel::clickToRestart
+				getResString(resId = R.string.open_fields) to viewModel::openAll,
+				getResString(resId = R.string.reset_game) to viewModel::clickToRestart
 			),
 			onDismissRequest = onDismiss
 		)

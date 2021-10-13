@@ -1,6 +1,5 @@
 package net.it_dev.sapper.presenter.screen.game.top_line
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -62,10 +61,8 @@ fun TopLine(viewModel: GameScreenViewModel = hiltViewModel()) {
 				GameState.STOP -> Icons.Default.SentimentNeutral
 			}
 		}
-		Log.d("TAG","test0")
 
 		var saveIcon = remember { mutableStateOf<ImageVector?>(null) }
-		Log.d("TAG","test1")
 		Icon(
 			imageVector = icon,
 			contentDescription = "Face",
@@ -87,9 +84,7 @@ fun TopLine(viewModel: GameScreenViewModel = hiltViewModel()) {
 		ShowDialog(state = viewModel.showDialog, viewModel = viewModel) {
 			icon = saveIcon.value!!
 			viewModel.showDialog.value = false
-			Log.d("TAG","test2")
 		}
-		Log.d("TAG","test3")
 		Timer(viewModel.time, Modifier.weight(1f,false))
 	}
 }

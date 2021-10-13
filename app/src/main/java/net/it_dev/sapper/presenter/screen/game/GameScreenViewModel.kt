@@ -23,6 +23,7 @@ class GameScreenViewModel @Inject constructor(
 	companion object {
 		private const val TAG = "GameScreenViewModel"
 	}
+	var snackebarText = mutableStateOf<String?>(null)
 	var showDialog = mutableStateOf(false)
 
 	private data class SessionData(val rows: Int, val columns: Int, val mines: Int)

@@ -4,19 +4,17 @@ import android.content.res.AssetManager
 import android.graphics.BitmapFactory
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
-import java.lang.IllegalArgumentException
-import java.lang.NullPointerException
 
 class AssetImageProvider():IBitmapFactory {
 	private val map = mutableMapOf<String,ImageBitmap>()
 
-	fun loadNewImages(am:AssetManager, vararg files:String){
+	fun loadAllImagesFrom(dir:String, am:AssetManager){
 		map.clear()
-		files.forEach { file->
-			am.open(file).use {
+		am.list(dir)?.forEach {fileName->
+			am.open("$dir/$fileName").use {
 				val imageBitmap = BitmapFactory.decodeStream(it).asImageBitmap()
-				if (map.containsKey(file)) throw IllegalArgumentException("double key")
-				map[file] = imageBitmap
+				if (map.containsKey(fileName)) throw IllegalArgumentException("double key")
+				map[fileName] = imageBitmap
 			}
 		}
 	}

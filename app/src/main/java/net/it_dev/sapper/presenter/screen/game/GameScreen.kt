@@ -6,9 +6,7 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Divider
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,16 +19,33 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import net.it_dev.sapper.domain.ItemField
 import net.it_dev.sapper.domain.ItemFieldState
 import net.it_dev.sapper.presenter.screen.game.top_line.TopLine
 import net.it_dev.sapper.presenter.ui.theme.border
+import net.it_dev.sapper.presenter.util.SnackbarMessage
 import net.it_dev.sapper.util.Resource
 import kotlin.random.Random
 
 @Composable
 fun GameScreen(navController: NavController, viewModel: GameScreenViewModel = hiltViewModel()) {
+	val scaffoldState = rememberScaffoldState()
+	val scope = rememberCoroutineScope()
+	Scaffold (
+		scaffoldState = scaffoldState,
+	){
+		Content(viewModel = viewModel)
+		SnackbarMessage(textState = viewModel.snackebarText, scaffoldState = scaffoldState, scope = scope)
+	}
+}
+
+
+
+@Composable
+private fun Content(viewModel: GameScreenViewModel) {
 	LaunchedEffect(Unit){
 		viewModel.initial()
 	}
@@ -164,7 +179,7 @@ fun ItemField(line: Int, pos: Int, itemField: State<ItemField>, viewModel: GameS
 		)
 		if (item.hasFlag) {
 			Image(
-				bitmap = viewModel.imageBitmapFactory.getImageBitmap("flag.png"),
+				bitmap = viewModel.imageBitmapFactory.getImageBitmap("imgs/flag.png"),
 				contentDescription = "Flag",
 				contentScale = ContentScale.FillBounds,
 				modifier = Modifier.fillMaxSize(),

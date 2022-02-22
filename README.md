@@ -6,5 +6,5 @@
 :black_square_button: Онлайн рекорды    
 :black_square_button: ... :)
 
-[Screen1](http://it-dev.pro/dev_git/sapper/1.png)
-[Screen2](http://it-dev.pro/dev_git/sapper/2.png)
+[Screen1](http://dev4game.com/dev_git/sapper/1.png)
+[Screen2](http://dev4game.com/dev_git/sapper/2.png)
